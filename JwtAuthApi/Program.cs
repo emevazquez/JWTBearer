@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.AddConsole();
 
 
 // Add services to the container.
@@ -50,6 +51,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = "JwtAuthApi",
             ValidAudience = "JwtAuthApi",
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSecretKey@sadaasdsadasdsxasxasxasfdsabyytbytbt"))
+        };
+        options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine($"Token inválido: {context.Exception.Message}");
+                return System.Threading.Tasks.Task.CompletedTask;
+            },
+            OnChallenge = context =>
+            {
+                Console.WriteLine($"Challenge: {context.ErrorDescription}");
+                return System.Threading.Tasks.Task.CompletedTask;
+            }
         };
     });
 

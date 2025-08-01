@@ -39,3 +39,27 @@
 ## Notas
 - Si cambias la clave secreta, actualízala en ambos archivos.
 - Si Swagger no muestra los endpoints, asegúrate de tener `AddControllers()` y `MapControllers()` en `Program.cs` y que los endpoints no estén definidos como minimal APIs.
+
+## Logging de autenticación/autorización
+- Para depurar errores de autenticación (401), agrega logging detallado en `Program.cs`:
+  - Antes de `builder.Build()`, agrega:
+    ```csharp
+    builder.Logging.AddConsole();
+    ```
+  - En la configuración de JWT Bearer, agrega:
+    ```csharp
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine($"Token inválido: {context.Exception.Message}");
+            return Task.CompletedTask;
+        },
+        OnChallenge = context =>
+        {
+            Console.WriteLine($"Challenge: {context.ErrorDescription}");
+            return Task.CompletedTask;
+        }
+    };
+    ```
+- Así podrás ver en la consola el motivo exacto de los errores de autenticación o autorización.
