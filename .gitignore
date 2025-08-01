@@ -1,0 +1,32 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Dotnet artifacts
+*.dbmdl
+*.log
+*.vspscc
+*.vssscc
+
+# Others
+*.DS_Store
+*.swp
+*.sln.ide
+
+# Ignore test results
+TestResults/
+
+# Ignore publish output
+publish/
+
+# Ignore secrets
+secrets.json
